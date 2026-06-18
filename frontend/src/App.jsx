@@ -4,6 +4,7 @@ import ControlPanel from './components/ControlPanel'
 import StatsPanel from './components/StatsPanel'
 import MessageLog from './components/MessageLog'
 import ConsensusPanel from './components/ConsensusPanel'
+import { Zap, Crown, AlertTriangle, Settings } from 'lucide-react'
 
 const API_BASE = '/api';
 const POLL_INTERVAL = 2000;
@@ -97,25 +98,25 @@ function App() {
     <div className="app">
       {/* Header */}
       <header className="header">
-        <h1>⚡ Algoritmo Bully — Elección de Coordinador</h1>
+        <h1><Zap size={28} style={{marginRight: '10px', verticalAlign: 'middle'}}/>Algoritmo Bully Elección de Coordinador</h1>
         <p className="header-subtitle">
-          Sistemas Distribuidos • Simulación en tiempo real
+          Sistemas Distribuidos  Simulación en tiempo real
         </p>
         <div className={`header-node-badge ${isActive ? '' : 'inactive'}`}>
           <span className="pulse-dot"></span>
-          Nodo P{localNodeId} • {isActive ? 'Activo' : 'Inactivo'}
-          {cluster?.coordinatorId === localNodeId && ' • 👑 Coordinador'}
+          Nodo P{localNodeId} {isActive ? 'Activo' : 'Inactivo'}
+          {cluster?.coordinatorId === localNodeId && <><Crown size={16} style={{marginLeft: '8px', marginRight: '4px', verticalAlign: 'middle'}}/>Coordinador</>}
         </div>
       </header>
 
       {/* Error de conexión */}
       {!connected && (
         <div className="connection-error">
-          ⚠️ No se puede conectar con el backend. Verifica que el servidor esté ejecutándose.
+          <AlertTriangle size={18} style={{marginRight: '8px', verticalAlign: 'middle'}}/> No se puede conectar con el backend. Verifica que el servidor esté ejecutándose.
         </div>
       )}
 
-      {/* Vista del Cluster (5 nodos) */}
+      {/* Vista del Cluster (4 nodos) */}
       <ClusterView
         nodes={cluster?.nodes || []}
         localNodeId={localNodeId}
@@ -140,7 +141,7 @@ function App() {
       {/* Eventos del Sistema */}
       {events.length > 0 && (
         <div className="events-section">
-          <div className="section-title">📋 Eventos del Sistema</div>
+          <div className="section-title"><Settings size={18} style={{marginRight: '6px', verticalAlign: 'middle'}}/>Eventos del Sistema</div>
           <div className="event-list">
             {[...events].reverse().map((event, index) => (
               <div key={index} className="event-item">

@@ -54,8 +54,8 @@ public class Message {
     }
 
     private String buildDescription() {
-        String arrow = direction == Direction.SENT ? "→" : "←";
-        String status = success ? "✓" : "✗";
+        String arrow = direction == Direction.SENT ? "" : "";
+        String status = success ? "" : "";
         return String.format("[%s] P%d %s P%d %s", type, senderId, arrow, receiverId, status);
     }
 

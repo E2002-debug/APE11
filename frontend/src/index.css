@@ -3,7 +3,7 @@
    Tema: Dark Premium con Glassmorphism
    ============================================ */
 
-/* ── Variables CSS ── */
+/*  Variables CSS  */
 :root {
   --bg-primary: #06080f;
   --bg-secondary: #0d1117;
@@ -48,7 +48,7 @@
   --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
 }
 
-/* ── Reset ── */
+/*  Reset  */
 *,
 *::before,
 *::after {
@@ -72,7 +72,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* ── Background Animated Gradient ── */
+/*  Background Animated Gradient  */
 body::before {
   content: '';
   position: fixed;
@@ -99,7 +99,7 @@ body::before {
   z-index: 1;
 }
 
-/* ── Layout Principal ── */
+/*  Layout Principal  */
 .app {
   max-width: 1400px;
   margin: 0 auto;
@@ -107,7 +107,7 @@ body::before {
   min-height: 100vh;
 }
 
-/* ── Header ── */
+/*  Header  */
 .header {
   text-align: center;
   margin-bottom: 32px;
@@ -177,7 +177,7 @@ body::before {
   animation: none;
 }
 
-/* ── Cluster View (Nodos) ── */
+/*  Cluster View (Nodos)  */
 .cluster-section {
   margin-bottom: 28px;
 }
@@ -219,7 +219,7 @@ body::before {
   }
 }
 
-/* ── Node Card ── */
+/*  Node Card  */
 .node-card {
   background: var(--glass-bg);
   border: 1px solid var(--glass-border);
@@ -377,7 +377,7 @@ body::before {
   opacity: 0.8;
 }
 
-/* ── Control Panel + Stats Row ── */
+/*  Control Panel + Stats Row  */
 .controls-stats-row {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -391,7 +391,7 @@ body::before {
   }
 }
 
-/* ── Control Panel ── */
+/*  Control Panel  */
 .control-panel {
   background: var(--glass-bg);
   border: 1px solid var(--glass-border);
@@ -486,7 +486,7 @@ body::before {
   color: var(--text-primary);
 }
 
-/* ── Stats Panel ── */
+/*  Stats Panel  */
 .stats-panel {
   background: var(--glass-bg);
   border: 1px solid var(--glass-border);
@@ -555,7 +555,7 @@ body::before {
   margin-top: 4px;
 }
 
-/* ── Message Log ── */
+/*  Message Log  */
 .message-log-section {
   background: var(--glass-bg);
   border: 1px solid var(--glass-border);
@@ -705,7 +705,7 @@ body::before {
   color: var(--danger);
 }
 
-/* ── Events Log ── */
+/*  Events Log  */
 .events-section {
   margin-top: 20px;
   background: var(--glass-bg);
@@ -744,7 +744,7 @@ body::before {
   color: var(--text-secondary);
 }
 
-/* ── Empty State ── */
+/*  Empty State  */
 .empty-state {
   text-align: center;
   padding: 32px;
@@ -758,7 +758,7 @@ body::before {
   opacity: 0.5;
 }
 
-/* ── Loading State ── */
+/*  Loading State  */
 .loading {
   display: flex;
   justify-content: center;
@@ -779,7 +779,7 @@ body::before {
   to { transform: rotate(360deg); }
 }
 
-/* ── Connection Error Banner ── */
+/*  Connection Error Banner  */
 .connection-error {
   background: var(--danger-dim);
   border: 1px solid rgba(255, 82, 82, 0.3);
@@ -794,7 +794,7 @@ body::before {
   animation: slideIn 0.3s ease-out;
 }
 
-/* ── Custom Scrollbar ── */
+/*  Custom Scrollbar  */
 ::-webkit-scrollbar {
   width: 6px;
 }
@@ -812,7 +812,7 @@ body::before {
   background: rgba(255, 255, 255, 0.2);
 }
 
-/* ── Responsive ── */
+/*  Responsive  */
 @media (max-width: 768px) {
   .app {
     padding: 16px;

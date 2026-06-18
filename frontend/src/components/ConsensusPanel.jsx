@@ -1,4 +1,5 @@
 import React from 'react';
+import { ShieldCheck } from 'lucide-react';
 
 function ConsensusPanel({ consensusData }) {
   if (!consensusData || !consensusData.transactionId) {
@@ -17,7 +18,7 @@ function ConsensusPanel({ consensusData }) {
         boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)'
     }}>
       <div className="section-title" style={{ marginBottom: '12px', borderBottom: '1px solid var(--border-color)', paddingBottom: '8px' }}>
-        ⚖️ Resultados de Consenso BFT
+        <ShieldCheck size={18} style={{marginRight: '6px', verticalAlign: 'middle'}}/>Resultados de Consenso BFT
       </div>
       
       <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '16px' }}>

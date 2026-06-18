@@ -1,14 +1,16 @@
+import { Server, Zap, Crown, Skull, RefreshCw, Cpu } from 'lucide-react';
+
 /**
- * ClusterView - Visualización de los 5 nodos del sistema distribuido.
+ * ClusterView - Visualización de los 4 nodos del sistema distribuido.
  * Muestra cada nodo como una tarjeta con su estado, rol e información.
  */
 function ClusterView({ nodes, localNodeId, coordinatorId }) {
   if (!nodes || nodes.length === 0) {
     return (
       <div className="cluster-section">
-        <div className="section-title">🖥️ Cluster de Procesos</div>
+        <div className="section-title"><Server size={18} style={{marginRight: '6px', verticalAlign: 'middle'}}/>Cluster de Procesos</div>
         <div className="empty-state">
-          <div className="empty-icon">🔄</div>
+          <div className="empty-icon"><RefreshCw size={24} className="spin" /></div>
           <p>Cargando nodos del cluster...</p>
         </div>
       </div>
@@ -17,7 +19,7 @@ function ClusterView({ nodes, localNodeId, coordinatorId }) {
 
   return (
     <div className="cluster-section">
-      <div className="section-title">🖥️ Cluster de Procesos</div>
+      <div className="section-title"><Server size={18} style={{marginRight: '6px', verticalAlign: 'middle'}}/>Cluster de Procesos</div>
       <div className="cluster-grid">
         {nodes.map((node) => {
           const isCoordinator = node.nodeId === coordinatorId;
@@ -35,30 +37,30 @@ function ClusterView({ nodes, localNodeId, coordinatorId }) {
           // Determinar el rol
           let roleText, roleClass;
           if (!isActive) {
-            roleText = '● INACTIVO';
+            roleText = '(*) INACTIVO';
             roleClass = 'inactive';
           } else if (isInElection) {
-            roleText = '⚡ EN ELECCIÓN';
+            roleText = '[ELEC] EN ELECCIÓN';
             roleClass = 'electing';
           } else if (isCoordinator) {
-            roleText = '👑 COORDINADOR';
+            roleText = '[COORD] COORDINADOR';
             roleClass = 'coordinator';
           } else {
-            roleText = '● PROCESO';
+            roleText = '(*) PROCESO';
             roleClass = 'process';
           }
 
           // Icono del nodo
-          let icon;
-          if (!isActive) icon = '💀';
-          else if (node.byzantine) icon = '😈';
-          else if (isCoordinator) icon = '👑';
-          else if (isInElection) icon = '⚡';
-          else icon = '🖥️';
+          let IconComponent;
+          if (!isActive) IconComponent = Skull;
+          else if (node.byzantine) IconComponent = Cpu;
+          else if (isCoordinator) IconComponent = Crown;
+          else if (isInElection) IconComponent = Zap;
+          else IconComponent = Server;
 
           return (
             <div key={node.nodeId} className={cardClass}>
-              <span className="node-icon">{icon}</span>
+              <span className="node-icon" style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}><IconComponent size={32} strokeWidth={1.5} /></span>
               <div className="node-name">P{node.nodeId}</div>
               <span className={`node-role ${roleClass}`}>{roleText}</span>
               {node.byzantine && isActive && (
@@ -82,7 +84,7 @@ function ClusterView({ nodes, localNodeId, coordinatorId }) {
                 </div>
               )}
               {isLocal && (
-                <div className="node-local-tag">◆ Este nodo</div>
+                <div className="node-local-tag" style={{ display: 'inline-flex', alignItems: 'center' }}><Zap size={10} style={{marginRight: '4px'}}/>Este nodo</div>
               )}
             </div>
           );

@@ -23,8 +23,8 @@ import java.util.concurrent.*;
  * ALGORITMO BULLY:
  * 1. Cuando un proceso P detecta que el coordinador falló:
  *    - P envía ELECTION a todos los procesos con ID mayor
- *    - Si ninguno responde (timeout) → P se declara COORDINADOR
- *    - Si alguno responde OK → P espera anuncio COORDINATOR
+ *    - Si ninguno responde (timeout)  P se declara COORDINADOR
+ *    - Si alguno responde OK  P espera anuncio COORDINATOR
  * 
  * 2. Cuando un proceso Q recibe ELECTION de un proceso con ID menor:
  *    - Q responde OK al emisor
@@ -75,7 +75,7 @@ public class BullyService {
         coordinatorId = nodeConfig.getMaxPeerId();
 
         if (nodeConfig.getNodeId() == coordinatorId) {
-            log.info("★★★ Nodo P{} es el COORDINADOR INICIAL ★★★", nodeConfig.getNodeId());
+            log.info("*** Nodo P{} es el COORDINADOR INICIAL ***", nodeConfig.getNodeId());
             messageLogger.logEvent("Nodo P" + nodeConfig.getNodeId() + " inicia como COORDINADOR");
         } else {
             log.info("Nodo P{} iniciado. Coordinador actual: P{}",
@@ -108,12 +108,12 @@ public class BullyService {
             inElection = true;
         }
 
-        log.info("══════════════════════════════════════════");
+        log.info("==========================================");
         log.info("  NODO P{} INICIA ELECCIÓN", nodeConfig.getNodeId());
-        log.info("══════════════════════════════════════════");
+        log.info("==========================================");
 
         messageLogger.startElectionTimer();
-        messageLogger.logEvent("🗳️ Nodo P" + nodeConfig.getNodeId() +
+        messageLogger.logEvent("Nodo P" + nodeConfig.getNodeId() +
                 " inicia proceso de elección");
 
         // Obtener procesos con ID mayor
@@ -121,9 +121,9 @@ public class BullyService {
                 .filter(p -> p.getId() > nodeConfig.getNodeId())
                 .toList();
 
-        // Si no hay procesos con ID mayor → soy el coordinador
+        // Si no hay procesos con ID mayor  soy el coordinador
         if (higherPeers.isEmpty()) {
-            log.info("Nodo P{} tiene el ID más alto → se declara coordinador",
+            log.info("Nodo P{} tiene el ID más alto  se declara coordinador",
                     nodeConfig.getNodeId());
             declareCoordinator();
             return;
@@ -139,12 +139,12 @@ public class BullyService {
         }
 
         if (!anyResponded) {
-            // Ningún proceso superior respondió → soy el coordinador
-            log.info("Ningún nodo superior respondió → P{} se declara coordinador",
+            // Ningún proceso superior respondió  soy el coordinador
+            log.info("Ningún nodo superior respondió  P{} se declara coordinador",
                     nodeConfig.getNodeId());
             declareCoordinator();
         } else {
-            // Alguno respondió OK → esperar anuncio COORDINATOR con timeout
+            // Alguno respondió OK  esperar anuncio COORDINATOR con timeout
             log.info("Nodo P{} recibió OK, esperando anuncio COORDINATOR...",
                     nodeConfig.getNodeId());
             scheduleCoordinatorWaitTimeout();
@@ -165,7 +165,7 @@ public class BullyService {
             return false;
         }
 
-        log.info("📩 Recibido ELECTION de P{} → respondiendo OK", senderId);
+        log.info("Recibido ELECTION de P{}  respondiendo OK", senderId);
         messageLogger.logReceived(Message.Type.ELECTION, senderId, nodeConfig.getNodeId());
         messageLogger.logSent(Message.Type.OK, nodeConfig.getNodeId(), senderId);
 
@@ -192,7 +192,7 @@ public class BullyService {
     public void handleCoordinatorMessage(int newCoordinatorId) {
         if (!active) return;
 
-        log.info("👑 Recibido COORDINATOR: P{} es el nuevo coordinador", newCoordinatorId);
+        log.info("Recibido COORDINATOR: P{} es el nuevo coordinador", newCoordinatorId);
         messageLogger.logReceived(Message.Type.COORDINATOR, newCoordinatorId,
                 nodeConfig.getNodeId());
 
@@ -205,7 +205,7 @@ public class BullyService {
             }
         }
 
-        messageLogger.logEvent("👑 Nodo P" + nodeConfig.getNodeId() +
+        messageLogger.logEvent("Nodo P" + nodeConfig.getNodeId() +
                 " reconoce a P" + newCoordinatorId + " como COORDINADOR");
     }
 
@@ -222,20 +222,20 @@ public class BullyService {
             RestTemplate rt = createRestTemplate();
             Map<String, Object> body = Map.of("senderId", nodeConfig.getNodeId());
 
-            log.info("📤 Enviando ELECTION: P{} → P{}", nodeConfig.getNodeId(), peer.getId());
+            log.info("Enviando ELECTION: P{}  P{}", nodeConfig.getNodeId(), peer.getId());
             messageLogger.logSent(Message.Type.ELECTION, nodeConfig.getNodeId(), peer.getId());
 
             ResponseEntity<Map> response = rt.postForEntity(
                     peer.getUrl() + "/api/election", body, Map.class);
 
             if (response.getStatusCode().is2xxSuccessful()) {
-                log.info("✅ Recibido OK de P{}", peer.getId());
+                log.info("Recibido OK de P{}", peer.getId());
                 messageLogger.logReceived(Message.Type.OK, peer.getId(),
                         nodeConfig.getNodeId());
                 return true;
             }
         } catch (Exception e) {
-            log.warn("❌ P{} no responde: {}", peer.getId(), e.getMessage());
+            log.warn("P{} no responde: {}", peer.getId(), e.getMessage());
             messageLogger.logFailed(Message.Type.ELECTION, nodeConfig.getNodeId(),
                     peer.getId());
         }
@@ -255,11 +255,11 @@ public class BullyService {
             }
         }
 
-        log.info("★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★");
+        log.info("***************************************");
         log.info("  NODO P{} ES EL NUEVO COORDINADOR", nodeConfig.getNodeId());
-        log.info("★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★");
+        log.info("***************************************");
 
-        messageLogger.logEvent("🏆 ¡P" + nodeConfig.getNodeId() +
+        messageLogger.logEvent("¡P" + nodeConfig.getNodeId() +
                 " se declara COORDINADOR!");
         messageLogger.recordElection(nodeConfig.getNodeId());
 
@@ -279,14 +279,14 @@ public class BullyService {
             RestTemplate rt = createRestTemplate();
             Map<String, Object> body = Map.of("coordinatorId", nodeConfig.getNodeId());
 
-            log.info("📤 Enviando COORDINATOR: P{} → P{}", nodeConfig.getNodeId(), peer.getId());
+            log.info("Enviando COORDINATOR: P{}  P{}", nodeConfig.getNodeId(), peer.getId());
             messageLogger.logSent(Message.Type.COORDINATOR, nodeConfig.getNodeId(),
                     peer.getId());
 
             rt.postForEntity(peer.getUrl() + "/api/coordinator", body, String.class);
-            log.info("✅ COORDINATOR enviado a P{}", peer.getId());
+            log.info("COORDINATOR enviado a P{}", peer.getId());
         } catch (Exception e) {
-            log.warn("❌ No se pudo enviar COORDINATOR a P{}: {}", peer.getId(),
+            log.warn("No se pudo enviar COORDINATOR a P{}: {}", peer.getId(),
                     e.getMessage());
             messageLogger.logFailed(Message.Type.COORDINATOR, nodeConfig.getNodeId(),
                     peer.getId());
@@ -306,8 +306,8 @@ public class BullyService {
         coordinatorWaitTask = scheduler.schedule(() -> {
             synchronized (electionLock) {
                 if (inElection) {
-                    log.warn("⏰ Timeout esperando COORDINATOR → reiniciando elección");
-                    messageLogger.logEvent("⏰ Timeout esperando COORDINATOR en P" +
+                    log.warn("Timeout esperando COORDINATOR  reiniciando elección");
+                    messageLogger.logEvent("Timeout esperando COORDINATOR en P" +
                             nodeConfig.getNodeId());
                     inElection = false;
                 }
@@ -333,8 +333,8 @@ public class BullyService {
             }
         }
 
-        log.info("💀💀💀 NODO P{} HA FALLADO (simulado) 💀💀💀", nodeConfig.getNodeId());
-        messageLogger.logEvent("💀 Nodo P" + nodeConfig.getNodeId() +
+        log.info("NODO P{} HA FALLADO (simulado) ", nodeConfig.getNodeId());
+        messageLogger.logEvent("Nodo P" + nodeConfig.getNodeId() +
                 " ha fallado (simulado)");
     }
 
@@ -346,9 +346,9 @@ public class BullyService {
             active = true;
         }
 
-        log.info("🔄 Nodo P{} SE HA RECUPERADO", nodeConfig.getNodeId());
-        messageLogger.logEvent("🔄 Nodo P" + nodeConfig.getNodeId() +
-                " se ha recuperado → inicia elección");
+        log.info("Nodo P{} SE HA RECUPERADO", nodeConfig.getNodeId());
+        messageLogger.logEvent("Nodo P" + nodeConfig.getNodeId() +
+                " se ha recuperado  inicia elección");
 
         // Al recuperarse, el nodo inicia una elección automáticamente
         startElection();
@@ -377,7 +377,7 @@ public class BullyService {
                     Map.class);
             return response.getStatusCode().is2xxSuccessful();
         } catch (Exception e) {
-            log.warn("💔 Coordinador P{} no responde al ping", coordinatorId);
+            log.warn("Coordinador P{} no responde al ping", coordinatorId);
             return false;
         }
     }
@@ -425,11 +425,11 @@ public class BullyService {
     public void setByzantine(boolean byzantine) {
         this.byzantine = byzantine;
         if (byzantine) {
-            log.info("😈 NODO P{} AHORA ES BIZANTINO", nodeConfig.getNodeId());
-            messageLogger.logEvent("😈 Nodo P" + nodeConfig.getNodeId() + " configurado como BIZANTINO");
+            log.info("NODO P{} AHORA ES BIZANTINO", nodeConfig.getNodeId());
+            messageLogger.logEvent("Nodo P" + nodeConfig.getNodeId() + " configurado como BIZANTINO");
         } else {
-            log.info("😇 NODO P{} AHORA ES HONESTO", nodeConfig.getNodeId());
-            messageLogger.logEvent("😇 Nodo P" + nodeConfig.getNodeId() + " configurado como HONESTO");
+            log.info("NODO P{} AHORA ES HONESTO", nodeConfig.getNodeId());
+            messageLogger.logEvent("Nodo P" + nodeConfig.getNodeId() + " configurado como HONESTO");
         }
     }
 
@@ -440,8 +440,8 @@ public class BullyService {
     public void startConsensus(String transactionId) {
         if (!active) return;
         
-        log.info("⚖️ Iniciando consenso para transacción: {}", transactionId);
-        messageLogger.logEvent("⚖️ P" + nodeConfig.getNodeId() + " inicia consenso para: " + transactionId);
+        log.info("Iniciando consenso para transacción: {}", transactionId);
+        messageLogger.logEvent("P" + nodeConfig.getNodeId() + " inicia consenso para: " + transactionId);
         
         lastTransactionId = transactionId;
         consensusVotes.put(transactionId, new ConcurrentHashMap<>());
@@ -460,12 +460,12 @@ public class BullyService {
                     "transactionId", transactionId
             );
 
-            log.info("📤 Enviando CONSENSUS_PREPARE: P{} → P{}", nodeConfig.getNodeId(), peer.getId());
+            log.info("Enviando CONSENSUS_PREPARE: P{}  P{}", nodeConfig.getNodeId(), peer.getId());
             messageLogger.logSent(Message.Type.CONSENSUS_PREPARE, nodeConfig.getNodeId(), peer.getId());
 
             rt.postForEntity(peer.getUrl() + "/api/consensus/prepare", body, Map.class);
         } catch (Exception e) {
-            log.warn("❌ P{} no responde al PREPARE: {}", peer.getId(), e.getMessage());
+            log.warn("P{} no responde al PREPARE: {}", peer.getId(), e.getMessage());
             messageLogger.logFailed(Message.Type.CONSENSUS_PREPARE, nodeConfig.getNodeId(), peer.getId());
         }
     }
@@ -473,7 +473,7 @@ public class BullyService {
     public void handleConsensusPrepare(int senderId, String transactionId) {
         if (!active) return;
         
-        log.info("📩 Recibido CONSENSUS_PREPARE de P{} para {}", senderId, transactionId);
+        log.info("Recibido CONSENSUS_PREPARE de P{} para {}", senderId, transactionId);
         messageLogger.logReceived(Message.Type.CONSENSUS_PREPARE, senderId, nodeConfig.getNodeId());
 
         lastTransactionId = transactionId;
@@ -506,19 +506,19 @@ public class BullyService {
                     "vote", vote
             );
 
-            log.info("📤 Enviando CONSENSUS_VOTE ({}) a P{}", vote ? "SI" : "NO", peer.getId());
+            log.info("Enviando CONSENSUS_VOTE ({}) a P{}", vote ? "SI" : "NO", peer.getId());
             messageLogger.logSent(Message.Type.CONSENSUS_VOTE, nodeConfig.getNodeId(), peer.getId());
 
             rt.postForEntity(peer.getUrl() + "/api/consensus/vote", body, Map.class);
         } catch (Exception e) {
-            log.warn("❌ P{} no responde al VOTE: {}", peer.getId(), e.getMessage());
+            log.warn("P{} no responde al VOTE: {}", peer.getId(), e.getMessage());
         }
     }
 
     public void handleConsensusVote(int senderId, String transactionId, boolean vote) {
         if (!active) return;
         
-        log.info("📩 Recibido CONSENSUS_VOTE ({}) de P{} para {}", vote ? "SI" : "NO", senderId, transactionId);
+        log.info("Recibido CONSENSUS_VOTE ({}) de P{} para {}", vote ? "SI" : "NO", senderId, transactionId);
         messageLogger.logReceived(Message.Type.CONSENSUS_VOTE, senderId, nodeConfig.getNodeId());
 
         consensusVotes.putIfAbsent(transactionId, new ConcurrentHashMap<>());

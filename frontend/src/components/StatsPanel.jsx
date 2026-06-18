@@ -6,9 +6,9 @@ function StatsPanel({ stats }) {
   if (!stats) {
     return (
       <div className="stats-panel">
-        <div className="section-title">📊 Estadísticas</div>
+        <div className="section-title"> Estadísticas</div>
         <div className="empty-state">
-          <div className="empty-icon">📊</div>
+          <div className="empty-icon"></div>
           <p>Cargando estadísticas...</p>
         </div>
       </div>
@@ -21,11 +21,11 @@ function StatsPanel({ stats }) {
     : null;
   const convergenceTime = lastElection
     ? `${lastElection.convergenceTimeMs}ms`
-    : '—';
+    : '';
 
   return (
     <div className="stats-panel">
-      <div className="section-title">📊 Estadísticas</div>
+      <div className="section-title"> Estadísticas</div>
       <div className="stats-grid">
         <div className="stat-item">
           <div className="stat-value total">{stats.totalMessages || 0}</div>
@@ -78,7 +78,7 @@ function StatsPanel({ stats }) {
                 fontSize: '0.78rem'
               }}>
                 <span style={{ color: 'var(--text-muted)' }}>
-                  #{idx + 1} • {election.timestamp}
+                  #{idx + 1}  {election.timestamp}
                 </span>
                 <span>
                   <span style={{ color: 'var(--gold)', fontWeight: 700 }}>

@@ -1,11 +1,11 @@
 #!/bin/bash
 # ============================================
-# Script para detener los 5 nodos
+# Script para detener los 4 nodos
 # ============================================
 
 cd "$(dirname "$0")/.."
 
-echo "🛑 Deteniendo los nodos..."
+echo "[STOP] Deteniendo los nodos..."
 
 if [ -f .local_pids ]; then
   while read pid; do
@@ -14,9 +14,9 @@ if [ -f .local_pids ]; then
   done < .local_pids
   
   rm .local_pids
-  echo "✅ Nodos detenidos usando archivo de PIDs."
+  echo "[OK] Nodos detenidos usando archivo de PIDs."
 else
-  echo "⚠️ No se encontró el archivo de PIDs. Intentando matar procesos java 'bully-algorithm'..."
+  echo "[WARN] No se encontró el archivo de PIDs. Intentando matar procesos java 'bully-algorithm'..."
   pkill -f bully-algorithm
-  echo "✅ Nodos detenidos por nombre de proceso."
+  echo "[OK] Nodos detenidos por nombre de proceso."
 fi

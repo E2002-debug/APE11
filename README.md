@@ -1,55 +1,24 @@
-# 🗳️ Algoritmo Bully - Elección de Coordinador
+# Algoritmo Bully - Eleccion de Coordinador
 
-**Práctica 10 - Sistemas Distribuidos**  
-**FEIRNNR - Carrera de Computación**
+[!] Practica 10 - Sistemas Distribuidos
+[!] FEIRNNR - Carrera de Computacion
 
-Sistema distribuido real con 5 nodos que implementa el Algoritmo Bully para elección dinámica de coordinador.
+Sistema distribuido real con 4 nodos que implementa el Algoritmo Bully para eleccion dinamica de coordinador.
 
-## 🏗️ Tecnologías
+## [+] Tecnologias
 
-- **Backend**: Java 17 + Spring Boot 3.2
-- **Frontend**: React 18 + Vite
-- **Comunicación**: REST HTTP entre nodos
-- **Red**: Ethernet (switch/router) para baja latencia
+- Backend: Java 17 + Spring Boot 3.2
+- Frontend: React 18 + Vite
+- Comunicacion: REST HTTP entre nodos
+- Red: Ethernet (switch/router) para baja latencia
 
-## 📁 Estructura del Proyecto
+## [+] Como se usa la aplicacion (Guia Rapida)
 
-```
-Practica_Bully/
-├── pom.xml                          # Configuración Maven
-├── scripts/
-│   ├── configure-node.sh            # Configurar nodo (IPs + ID)
-│   └── build.sh                     # Compilar todo
-├── src/main/java/.../bully/
-│   ├── BullyAlgorithmApplication.java
-│   ├── config/
-│   │   ├── NodeConfig.java          # Configuración del nodo
-│   │   └── WebConfig.java           # CORS
-│   ├── model/
-│   │   ├── Message.java             # Modelo de mensaje
-│   │   ├── NodeInfo.java            # Info de un nodo
-│   │   └── NodeStatus.java          # Estado de un nodo
-│   ├── service/
-│   │   ├── BullyService.java        # ★ Lógica del algoritmo
-│   │   └── MessageLogger.java       # Registro de mensajes
-│   ├── controller/
-│   │   └── BullyController.java     # Endpoints REST
-│   └── scheduler/
-│       └── HeartbeatScheduler.java   # Detección de fallas
-└── frontend/
-    └── src/
-        ├── App.jsx                   # Componente principal
-        └── components/
-            ├── ClusterView.jsx       # Visualización de nodos
-            ├── ControlPanel.jsx      # Botones de control
-            ├── MessageLog.jsx        # Log de mensajes
-            └── StatsPanel.jsx        # Estadísticas
-```
+Para probar el algoritmo en las 4 PCs, debes seguir estos pasos:
 
-## 🚀 Guía Rápida (5 minutos)
+### 1. Compilar el proyecto (en una sola PC)
 
-### 1. Compilar (en una sola PC)
-
+Primero, debes compilar todo el codigo. En la terminal de la computadora principal ejecuta:
 ```bash
 # Dar permisos a los scripts
 chmod +x scripts/*.sh
@@ -58,82 +27,52 @@ chmod +x scripts/*.sh
 ./scripts/build.sh
 ```
 
-### 2. Copiar a las 5 PCs
+### 2. Distribuir a las 4 PCs
 
-Copiar **todo el proyecto** o solo estos archivos a cada PC:
-- `target/bully-algorithm-1.0.0.jar` (el JAR compilado)
-- `scripts/` (carpeta de scripts)
-- `src/main/resources/application.properties`
+Una vez compilado, copia todo el proyecto a las otras 3 computadoras (o al menos los archivos necesarios):
+- La carpeta `target/` (que contiene el archivo `.jar`).
+- La carpeta `scripts/`.
+- El archivo `src/main/resources/application.properties`.
 
-### 3. Configurar cada PC
+### 3. Configurar cada nodo
 
-En **cada computadora**, ejecutar:
+En CADA UNA de las 4 computadoras, abre una terminal en la carpeta del proyecto y ejecuta:
 ```bash
 ./scripts/configure-node.sh
 ```
 
-Esto preguntará:
-- El ID del nodo (1, 2, 3, 4 o 5)
-- Las IPs de las 5 computadoras
+El script te hara dos preguntas importantes:
+1. El ID del nodo actual (Ingresa 1, 2, 3 o 4 dependiendo de la PC).
+2. Las direcciones IP de las 4 computadoras de la red.
 
 ### 4. Iniciar los nodos
 
-En **cada computadora**:
+Una vez configurado, en cada computadora ejecuta el script de inicio que se genero para ese nodo:
 ```bash
-./scripts/start-nodeX.sh   # X = número del nodo
+# Ejemplo si estas en el nodo 1:
+./scripts/start-node1.sh
 ```
 
-O manualmente:
-```bash
-java -jar target/bully-algorithm-1.0.0.jar --node.id=X --node.peers="1,IP1,8080;2,IP2,8080;3,IP3,8080;4,IP4,8080;5,IP5,8080"
-```
+(En la computadora 2 sera start-node2.sh, etc.)
 
-### 5. Abrir el navegador
+### 5. Interfaz Grafica
 
-En cada PC, abrir: **http://localhost:8080**
+Abre tu navegador web en cualquiera de las PCs e ingresa a:
+http://localhost:8080
 
-## 🧪 Flujo de la Práctica
+Desde esta interfaz podras ver el estado del cluster, simular fallas (para ver como otro nodo asume como coordinador) y probar el sistema de Consenso Bizantino.
 
-| Paso | Acción | Resultado |
-|------|--------|-----------|
-| 1 | Iniciar los 5 nodos | Todos activos, P5 es coordinador |
-| 2 | En P5: "Simular Falla" | P5 se desactiva |
-| 3 | Esperar ~5s (heartbeat) | Un nodo detecta la falla e inicia elección |
-| 4 | Observar mensajes | ELECTION → OK → COORDINATOR |
-| 5 | Verificar resultado | P4 es el nuevo coordinador |
-| 6 | En P5: "Recuperar" | P5 vuelve, inicia elección, se convierte en coordinador |
+## [+] Flujo de Prueba de la Practica
 
-## 📡 Endpoints REST
+1. Iniciar los 4 nodos: Todos estaran activos y P4 sera el coordinador.
+2. En P4: Presiona "Simular Falla" en la interfaz. El nodo se apagara logicamente.
+3. Esperar (aprox 5s): Otro nodo detectara la falta del coordinador por el ping.
+4. Observar mensajes: Veras que se envian mensajes de ELECTION y OK.
+5. Verificar resultado: P3 deberia declararse como el nuevo coordinador.
+6. En P4: Presiona "Recuperar". P4 volvera a estar activo, iniciara otra eleccion y volvera a ser coordinador.
 
-| Método | Endpoint | Descripción |
-|--------|----------|-------------|
-| POST | /api/election | Recibir ELECTION |
-| POST | /api/coordinator | Recibir COORDINATOR |
-| POST | /api/ping | Heartbeat |
-| GET | /api/status | Estado del nodo |
-| GET | /api/cluster | Estado del cluster |
-| POST | /api/start-election | Iniciar elección manual |
-| POST | /api/fail | Simular falla |
-| POST | /api/recover | Recuperar nodo |
-| GET | /api/messages | Log de mensajes |
-| GET | /api/stats | Estadísticas |
+## [+] Tolerancia a Fallos Bizantinos (BFT)
 
-## ⚙️ Configuración
-
-En `src/main/resources/application.properties`:
-
-```properties
-node.id=1                    # ID del nodo (1-5)
-server.port=8080             # Puerto HTTP
-node.peers=1,IP,8080;...     # Lista de nodos
-bully.election-timeout=2000  # Timeout de elección (ms)
-bully.heartbeat-interval=5000 # Intervalo de heartbeat (ms)
-```
-
-## 📚 Algoritmo Bully
-
-1. **Detección de falla**: Heartbeat periódico al coordinador
-2. **Elección**: Enviar ELECTION a procesos con ID mayor
-3. **Respuesta OK**: Procesos superiores responden y hacen su propia elección
-4. **Coordinador**: El proceso activo con mayor ID gana y anuncia COORDINATOR
-5. **Recuperación**: Un nodo que se recupera inicia elección automática
+Puedes marcar un nodo como "Bizantino" desde la interfaz para probar la tolerancia a fallos.
+- Cuando un nodo es normal, respondera de forma honesta a las peticiones de consenso.
+- Cuando un nodo es bizantino, enviara respuestas de consenso contradictorias (Voto "SI" a unos, Voto "NO" a otros) para intentar confundir la decision global.

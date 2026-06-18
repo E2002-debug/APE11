@@ -1,3 +1,5 @@
+import { CheckSquare, XCircle, RefreshCw, Trash2, Cpu, Scale, Settings } from 'lucide-react';
+
 /**
  * ControlPanel - Botones para controlar el nodo local.
  * Permite iniciar elecciones, simular fallas y recuperar el nodo.
@@ -5,7 +7,7 @@
 function ControlPanel({ onAction, isActive, isInElection }) {
   return (
     <div className="control-panel">
-      <div className="section-title">🎮 Panel de Control</div>
+      <div className="section-title"><Settings size={18} style={{marginRight: '6px', verticalAlign: 'middle'}}/>Panel de Control</div>
       <div className="control-buttons">
         <button
           className="btn btn-election"
@@ -13,7 +15,7 @@ function ControlPanel({ onAction, isActive, isInElection }) {
           disabled={!isActive || isInElection}
           title={!isActive ? 'Nodo inactivo' : isInElection ? 'Elección en curso' : 'Iniciar elección'}
         >
-          🗳️ Iniciar Elección
+          <CheckSquare size={16} style={{marginRight: '6px', verticalAlign: 'middle'}}/>Iniciar Elección
         </button>
 
         <button
@@ -22,7 +24,7 @@ function ControlPanel({ onAction, isActive, isInElection }) {
           disabled={!isActive}
           title={!isActive ? 'Ya está inactivo' : 'Simular falla del nodo'}
         >
-          💀 Simular Falla
+          <XCircle size={16} style={{marginRight: '6px', verticalAlign: 'middle'}}/>Simular Falla
         </button>
 
         <button
@@ -31,7 +33,7 @@ function ControlPanel({ onAction, isActive, isInElection }) {
           disabled={isActive}
           title={isActive ? 'Ya está activo' : 'Recuperar nodo'}
         >
-          🔄 Recuperar Nodo
+          <RefreshCw size={16} style={{marginRight: '6px', verticalAlign: 'middle'}}/>Recuperar Nodo
         </button>
 
         <button
@@ -39,7 +41,7 @@ function ControlPanel({ onAction, isActive, isInElection }) {
           onClick={() => onAction('clear')}
           title="Limpiar registros de mensajes"
         >
-          🗑️ Limpiar Logs
+          <Trash2 size={16} style={{marginRight: '6px', verticalAlign: 'middle'}}/>Limpiar Logs
         </button>
 
         <button
@@ -48,7 +50,7 @@ function ControlPanel({ onAction, isActive, isInElection }) {
           onClick={() => onAction('byzantine')}
           title="Alternar comportamiento Bizantino"
         >
-          😈 Alternar Bizantino
+          <Cpu size={16} style={{marginRight: '6px', verticalAlign: 'middle'}}/>Alternar Bizantino
         </button>
 
         <button
@@ -58,7 +60,7 @@ function ControlPanel({ onAction, isActive, isInElection }) {
           disabled={!isActive}
           title={!isActive ? 'Nodo inactivo' : 'Iniciar Consenso BFT'}
         >
-          ⚖️ Iniciar Consenso
+          <Scale size={16} style={{marginRight: '6px', verticalAlign: 'middle'}}/>Iniciar Consenso
         </button>
       </div>
     </div>

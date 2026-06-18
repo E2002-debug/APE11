@@ -63,17 +63,17 @@ public class HeartbeatScheduler {
 
         if (coordinatorAlive) {
             consecutiveFailures = 0;
-            log.debug("💓 Heartbeat OK - Coordinador P{} activo",
+            log.debug("Heartbeat OK - Coordinador P{} activo",
                     bullyService.getCoordinatorId());
         } else {
             consecutiveFailures++;
-            log.warn("💔 Heartbeat FALLO #{} - Coordinador P{} no responde",
+            log.warn("Heartbeat FALLO #{} - Coordinador P{} no responde",
                     consecutiveFailures, bullyService.getCoordinatorId());
 
             if (consecutiveFailures >= FAILURE_THRESHOLD) {
-                log.warn("🚨 Coordinador P{} detectado como INACTIVO → iniciando elección",
+                log.warn("Coordinador P{} detectado como INACTIVO  iniciando elección",
                         bullyService.getCoordinatorId());
-                messageLogger.logEvent("🚨 Nodo P" + nodeConfig.getNodeId() +
+                messageLogger.logEvent("Nodo P" + nodeConfig.getNodeId() +
                         " detecta falla del coordinador P" +
                         bullyService.getCoordinatorId());
                 consecutiveFailures = 0;

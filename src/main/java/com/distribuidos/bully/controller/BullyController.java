@@ -345,7 +345,10 @@ public class BullyController {
     public ResponseEntity<Map<String, Object>> getConsensusResults(@RequestParam(required = false) String transactionId) {
         String txId = transactionId != null ? transactionId : bullyService.getLastTransactionId();
         if (txId == null) {
-            return ResponseEntity.ok(Map.of("transactionId", null, "votes", Map.of()));
+            Map<String, Object> emptyResult = new HashMap<>();
+            emptyResult.put("transactionId", null);
+            emptyResult.put("votes", Map.of());
+            return ResponseEntity.ok(emptyResult);
         }
 
         Map<Integer, Boolean> votes = bullyService.getConsensusResults(txId);
