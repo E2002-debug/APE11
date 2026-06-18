@@ -1,0 +1,16 @@
+# Dependencias del Frontend
+frontend/node_modules/
+frontend/dist/
+
+# Archivos compilados del Backend
+target/
+*.class
+
+# Logs
+logs/
+*.log
+
+# Archivos de configuración de editores (opcional pero recomendado)
+.idea/
+.vscode/
+.DS_Store
