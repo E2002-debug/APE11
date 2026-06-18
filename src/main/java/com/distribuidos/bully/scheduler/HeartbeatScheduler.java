@@ -47,8 +47,15 @@ public class HeartbeatScheduler {
             return;
         }
 
-        // No hacer nada si somos el coordinador
+        // Si somos el coordinador, verificar si un nodo superior se acaba de reconectar
         if (bullyService.getCoordinatorId() == nodeConfig.getNodeId()) {
+            boolean higherNodeAlive = bullyService.checkHigherNodesAlive();
+            if (higherNodeAlive) {
+                log.warn("Se detectó un nodo superior activo. Iniciando elección para resolver split-brain...");
+                messageLogger.logEvent("Nodo P" + nodeConfig.getNodeId() +
+                        " detectó un nodo superior activo tras reconexión");
+                bullyService.startElection();
+            }
             consecutiveFailures = 0;
             return;
         }

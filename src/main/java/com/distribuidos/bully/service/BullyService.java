@@ -383,6 +383,31 @@ public class BullyService {
     }
 
     /**
+     * Verifica si algún nodo con ID superior está activo.
+     * Útil para recuperar el sistema de un "split-brain" o partición de red.
+     */
+    public boolean checkHigherNodesAlive() {
+        if (!active) return false;
+        for (NodeInfo peer : nodeConfig.getPeers()) {
+            if (peer.getId() > nodeConfig.getNodeId()) {
+                try {
+                    RestTemplate rt = createRestTemplate();
+                    ResponseEntity<Map> response = rt.postForEntity(
+                            peer.getUrl() + "/api/ping",
+                            Map.of("senderId", nodeConfig.getNodeId()),
+                            Map.class);
+                    if (response.getStatusCode().is2xxSuccessful()) {
+                        return true;
+                    }
+                } catch (Exception e) {
+                    // Ignorar nodo caído
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
      * Responde a un ping (health check) de otro nodo.
      */
     public boolean handlePing(int senderId) {
