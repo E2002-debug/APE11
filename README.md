@@ -1,7 +1,7 @@
-# Algoritmo Bully - Eleccion de Coordinador
+# Algoritmo Bully - Eleccion de Coordinador - Bizantino
 
-[!] Practica 10 - Sistemas Distribuidos
-[!] FEIRNNR - Carrera de Computacion
+Practica 11 - Sistemas Distribuidos 
+- FEIRNNR - Carrera de Computacion
 
 Sistema distribuido real con 4 nodos que implementa el Algoritmo Bully para eleccion dinamica de coordinador.
 
